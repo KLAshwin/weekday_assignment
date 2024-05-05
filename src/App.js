@@ -8,6 +8,7 @@ function App() {
   const [jobData, setJobData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [filterData, setFilterData] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -42,6 +43,7 @@ function App() {
     )
       .then((response) => response.json())
       .then((result) => {
+        console.log(jobData);
         setJobData((prevData) => [...prevData, ...result.jdList]); // Append new data to existing data
         setLoading(false);
         setPage((prevPage) => prevPage + 1); // Increment page number
@@ -55,18 +57,29 @@ function App() {
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight
+        document.documentElement.offsetHeight &&
+      loading
     ) {
       fetchData(); // Fetch more data when user scrolls to the bottom
     }
   };
+
   return (
     <>
-      <AllFilter />
+      <AllFilter filterData={filterData} setFilterData={setFilterData} />
 
-      {jobData.map((item, idx) => (
-        <JobCard item={item} idx={idx} />
-      ))}
+      <div style={{ display: "flex" }}>
+        {jobData
+          .filter((item) => {
+            return (
+              (item.jobRole in filterData.allRoles || item.jobRole == null || filterData.allRoles == []) &&
+              (item.companyName in filterData.allCompany || item.companyName in filterData.allCompany || filterData.allCompany == [])
+            );
+          })
+          .map((item, idx) => (
+            <JobCard item={item} idx={idx} />
+          ))}
+      </div>
 
       {loading && <CircularProgress />}
     </>

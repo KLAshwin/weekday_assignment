@@ -1,14 +1,19 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import { useState } from "react";
 
 function Filter(props) {
   return (
     <>
-      <Autocomplete 
+      <Autocomplete
         multiple
         id="tags-outlined"
         options={props.options}
         getOptionLabel={(option) => option.title}
+        onChange={(event, newValue) => {
+          const titlesArray = newValue.map(item => item.title);
+          props.setValue(titlesArray);
+        }}
         filterSelectedOptions
         renderInput={(params) => (
           <TextField

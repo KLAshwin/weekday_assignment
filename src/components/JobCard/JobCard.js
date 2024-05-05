@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 function JobCard(props) {
   return (
     <>
-      <Card key={props.idx} sx={{ minWidth: 275 }}>
+      <Card key={props.idx} sx={{ width: "300px" }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             {props.item.companyName}
