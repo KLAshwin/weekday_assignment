@@ -17,6 +17,7 @@ function Filter(props) {
             placeholder={props.placeholder}
           />
         )}
+        sx={{ width: "20vw" }}
       />
     </>
   );
