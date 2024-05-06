@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [loading]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -65,6 +65,12 @@ function App() {
 
   return (
     <>
+      <h3>
+        The filters for roles, experience, and search company name are synchronized
+        with the rendering of data, ensuring that only items matching the
+        selected filters are displayed.
+      </h3>
+
       <AllFilter filterData={filterData} setFilterData={setFilterData} />
 
       <div ref={containerRef} style={{ display: "flex", flexWrap: "wrap" }}>
@@ -115,11 +121,7 @@ function App() {
             // const baseFilterPassed =
             //   filterData.allMinBase.length === 0 || baseCheck;
 
-            return (
-              roleFilterPassed &&
-              companyFilterPassed &&
-              expFilterPassed
-            );
+            return roleFilterPassed && companyFilterPassed && expFilterPassed;
           })
           .map((item, idx) => (
             <JobCard item={item} idx={idx} />

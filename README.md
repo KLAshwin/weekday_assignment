@@ -1,3 +1,13 @@
+# How to run
+
+Link: https://github.com/KLAshwin/weekday_assignment
+Clone: https://github.com/KLAshwin/weekday_assignment.git
+RUN: npm run start
+
+# Filters implementation
+
+The filters for roles, experience, and company name are synchronized with the rendering of data, ensuring that only items matching the selected filters are displayed.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
