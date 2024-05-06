@@ -16,22 +16,18 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const container = containerRef.current;
-      if (
-        container.scrollHeight - container.scrollTop === container.clientHeight
-      ) {
-        fetchData();
-      }
-    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [loading]);
 
-    const container = containerRef.current;
-    container.addEventListener("scroll", handleScroll);
-
-    return () => {
-      container.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const handleScroll = () => {
+    if (
+      window.innerHeight + window.scrollY >= document.documentElement.offsetHeight &&
+      !loading
+    ) {
+      fetchData();
+    }
+  };
 
   const fetchData = () => {
     setLoading(true);
