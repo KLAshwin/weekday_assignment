@@ -22,7 +22,8 @@ function App() {
 
   const handleScroll = () => {
     if (
-      window.innerHeight + window.scrollY >= document.documentElement.offsetHeight &&
+      window.innerHeight + window.scrollY >=
+        document.documentElement.offsetHeight &&
       !loading
     ) {
       fetchData();
@@ -68,12 +69,29 @@ function App() {
       <div ref={containerRef} style={{ display: "flex", flexWrap: "wrap" }}>
         {jobData
           .filter((item) => {
+            let searchCheck = false;
             const roleFilterPassed =
               filterData.allRoles.length === 0 ||
               filterData.allRoles.includes(item.jobRole);
+
+            for (let i = 0; i < filterData.allCompany.length; i++) {
+              console.log(filterData.allCompany[i], item.companyName.toLowerCase(), filterData.allCompany[i].startsWith(
+                item.companyName.toLowerCase()
+              ));
+              if (
+                item.companyName.toLowerCase().startsWith(
+                  filterData.allCompany[i]
+                )
+              ) {
+                searchCheck = true;
+                break;
+              }
+            }
+
             const companyFilterPassed =
               filterData.allCompany.length === 0 ||
-              filterData.allCompany.includes(item.companyName.toLowerCase());
+              searchCheck;
+
             return roleFilterPassed && companyFilterPassed;
           })
           .map((item, idx) => (
