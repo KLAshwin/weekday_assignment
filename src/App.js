@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import JobCard from "./components/JobCard/JobCard";
 import CircularProgress from "@mui/material/CircularProgress";
-import Stack from "@mui/material/Stack";
 import "./App.css";
 import AllFilter from "./components/AllFilter/AllFilter";
 
@@ -10,17 +9,29 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [filterData, setFilterData] = useState([]);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     fetchData();
-  }, []); // Fetch data on initial component mount
+  }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      const container = containerRef.current;
+      if (
+        container.scrollHeight - container.scrollTop === container.clientHeight
+      ) {
+        fetchData();
+      }
     };
-  }, [jobData]); // Add/remove scroll event listener when jobData changes
+
+    const container = containerRef.current;
+    container.addEventListener("scroll", handleScroll);
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const fetchData = () => {
     setLoading(true);
@@ -29,7 +40,7 @@ function App() {
 
     const body = JSON.stringify({
       limit: 10,
-      offset: (page - 1) * 10, // Calculate offset based on page number
+      offset: (page - 1) * 10,
     });
 
     const requestOptions = {
@@ -44,10 +55,9 @@ function App() {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(jobData);
-        setJobData((prevData) => [...prevData, ...result.jdList]); // Append new data to existing data
+        setJobData((prevData) => [...prevData, ...result.jdList]);
         setLoading(false);
-        setPage((prevPage) => prevPage + 1); // Increment page number
+        setPage((prevPage) => prevPage + 1);
       })
       .catch((error) => {
         console.error(error);
@@ -55,21 +65,11 @@ function App() {
       });
   };
 
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight &&
-      loading
-    ) {
-      fetchData(); // Fetch more data when user scrolls to the bottom
-    }
-  };
-
   return (
     <>
       <AllFilter filterData={filterData} setFilterData={setFilterData} />
 
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div ref={containerRef} style={{ display: "flex", flexWrap: "wrap" }}>
         {jobData
           .filter((item) => {
             const roleFilterPassed =
@@ -77,7 +77,7 @@ function App() {
               filterData.allRoles.includes(item.jobRole);
             const companyFilterPassed =
               filterData.allCompany.length === 0 ||
-              filterData.allCompany.includes(item.companyName);
+              filterData.allCompany.includes(item.companyName.toLowerCase());
             return roleFilterPassed && companyFilterPassed;
           })
           .map((item, idx) => (

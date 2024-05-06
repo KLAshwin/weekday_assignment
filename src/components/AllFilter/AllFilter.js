@@ -73,7 +73,7 @@ function AllFilter(props) {
           variant="outlined"
           placeholder="Search Company Name"
           onChange={(e) => {
-            setAllCompany(e.target.value);
+            setAllCompany(e.target.value.toLowerCase());
           }}
         />
       </div>

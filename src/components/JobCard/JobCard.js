@@ -10,7 +10,6 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
 }));
 
 function JobCard(props) {
-  console.log(props);
   return (
     <>
       <DemoPaper variant="elevation" sx={{margin: "4px 20px 20px 4px"}}>

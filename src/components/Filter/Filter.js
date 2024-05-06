@@ -11,7 +11,7 @@ function Filter(props) {
         options={props.options}
         getOptionLabel={(option) => option.title}
         onChange={(event, newValue) => {
-          const titlesArray = newValue.map(item => item.title);
+          const titlesArray = newValue.map(item => item.title.toLowerCase());
           props.setValue(titlesArray);
         }}
         filterSelectedOptions
