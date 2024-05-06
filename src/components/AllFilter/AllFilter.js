@@ -27,7 +27,7 @@ function AllFilter(props) {
       allLocation: allLocation,
       allCompany: allCompany
     });
-  }, [setAllRoles, setAllExp, setAllMinBase, setAllNoOfEmp, setAllLocation, setAllCompany]);
+  }, [allRoles, allExp, allMinBase, allNoOfEmp, allLocation, allCompany]);
 
   return (
     <>

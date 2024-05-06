@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import JobCard from "./components/JobCard/JobCard";
 import CircularProgress from "@mui/material/CircularProgress";
+import Stack from "@mui/material/Stack";
 import "./App.css";
 import AllFilter from "./components/AllFilter/AllFilter";
 
@@ -68,13 +69,16 @@ function App() {
     <>
       <AllFilter filterData={filterData} setFilterData={setFilterData} />
 
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
         {jobData
           .filter((item) => {
-            return (
-              (item.jobRole in filterData.allRoles || item.jobRole == null || filterData.allRoles == []) &&
-              (item.companyName in filterData.allCompany || item.companyName in filterData.allCompany || filterData.allCompany == [])
-            );
+            const roleFilterPassed =
+              filterData.allRoles.length === 0 ||
+              filterData.allRoles.includes(item.jobRole);
+            const companyFilterPassed =
+              filterData.allCompany.length === 0 ||
+              filterData.allCompany.includes(item.companyName);
+            return roleFilterPassed && companyFilterPassed;
           })
           .map((item, idx) => (
             <JobCard item={item} idx={idx} />

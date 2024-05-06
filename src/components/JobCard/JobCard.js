@@ -1,29 +1,46 @@
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Button } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+
+const DemoPaper = styled(Paper)(({ theme }) => ({
+  width: 290,
+  height: "auto",
+  padding: theme.spacing(2),
+  ...theme.typography.body2,
+}));
 
 function JobCard(props) {
+  console.log(props);
   return (
     <>
-      <Card key={props.idx} sx={{ width: "300px" }}>
-        <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {props.item.companyName}
-          </Typography>
-          <Typography variant="h5" component="div">
-            {props.item.title}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {props.item.subtitle}
-          </Typography>
-          <Typography variant="body2">{props.item.description}</Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions>
-      </Card>
+      <DemoPaper variant="elevation" sx={{margin: "4px 20px 20px 4px"}}>
+        <img src={props.item.logoUrl} alt={props.item.companyName} />
+        <div>
+          <div>{props.item.companyName}</div>
+          <div>{props.item.jobRole}</div>
+          <div>{props.item.remote}</div>
+
+          <div>
+            Estimated Salary: {props.item.minJdSalary} -{" "}
+            {props.item.maxJdSalary} LPA
+          </div>
+
+          <div>
+            <div>About Company:</div>
+            <div>About us</div>
+            <div style={{height: "100px", overflow: "hidden"}}>{props.item.jobDetailsFromCompany}</div>
+          </div>
+          <div>
+            <div>Minimum Experience</div>
+            <div>{props.item.minExp} years</div>
+          </div>
+
+          <Button variant="contained" color="success">
+            Easy Apply
+          </Button>
+          <Button variant="contained">Unlock referral asks</Button>
+        </div>
+      </DemoPaper>
     </>
   );
 }
